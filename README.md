@@ -3,14 +3,14 @@ Curso de Estructuras de Datos
 Profesor Canek Peláez
 
 # Prácticas
- -Listas
- -Arreglos
- -Pilas y Colas
- -Árboles Binarios
- -Árboles binarios autobalanceables (AVL y Rojinegros)
- -Gráficas
- -Montículos mínimos
+ 1. Listas
+ 2. Arreglos
+ 3. Pilas y Colas
+ 4. Árboles Binarios
+ 5. Árboles binarios autobalanceables (AVL y Rojinegros)
+ 6. Gráficas
+ 7. Montículos mínimos
 
 # Proyectos
-  -Ordenador Lexicográfico
-  -Graficador SVG de estructuras de datos
+  1. Ordenador Lexicográfico
+  2. Graficador SVG de estructuras de datos

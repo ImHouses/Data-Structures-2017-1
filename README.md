@@ -5,8 +5,8 @@ Profesor Canek Peláez
 # Prácticas
  1. Listas
  2. Arreglos
- 3. Pilas y Colas
- 4. Árboles Binarios
+ 3. Pilas y colas
+ 4. Árboles binarios
  5. Árboles binarios autobalanceables (AVL y Rojinegros)
  6. Gráficas
  7. Montículos mínimos

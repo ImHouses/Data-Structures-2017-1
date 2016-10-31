@@ -1,5 +1,5 @@
 # Data-Structures-2017-1
-Curso de Estructuras de Datos
+Curso de Estructuras de Datos.
 Profesor Canek Peláez
 
 # Prácticas

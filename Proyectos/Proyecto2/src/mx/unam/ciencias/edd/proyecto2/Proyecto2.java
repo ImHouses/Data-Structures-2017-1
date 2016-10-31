@@ -8,7 +8,7 @@ public class Proyecto2 {
 public static void main(String[] args) {
 	Graficador graf = new Graficador();
 	Lista<Integer> l = new Lista<Integer>();
-	for (int i = 0; i < 11 ; i++  )
+	for (int i = 0; i < 21 ; i++  )
 		l.agrega(i);
 	System.out.println(graf.dibujaLista(l));
 	Pila<Integer> p = new Pila<Integer>();

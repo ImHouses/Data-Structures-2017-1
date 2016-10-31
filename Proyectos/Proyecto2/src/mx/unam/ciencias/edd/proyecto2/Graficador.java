@@ -4,36 +4,41 @@ import mx.unam.ciencias.edd.Lista;
 import mx.unam.ciencias.edd.MeteSaca;
 
 /**
-* Interface Graficador que nos provee un sólo método para dibujar en código SVG.
+* Clase pública Graficador que nos provee métodos para dibujar las estructuras 
+* de datos  en código SVG.
+* Posee cadenas constantes para cada campo del archivo SVG.
 */
 public class Graficador {
 
 	private String dibujo;
-	private static final String START_SVG = "<svg width='%d' height='%d'>\n";
-	private static final String END_SVG = "</svg>\n";
-	private static final String START_G = "\t<g>\n";
-	private static final String END_G = "\t</g>\n";
+	private static final String INICIO_SVG = "<svg width='%d' height='%d'>\n";
+	private static final String CIERRA_SVG = "</svg>\n";
+	private static final String INICIO_G = "\t<g>\n";
+	private static final String CIERRA_G = "\t</g>\n";
 	private static final String RECT =	"\t<rect x='%d' y='%d' width='%d' height='%d'" +
 								"stroke='black' fill='white'/>\n";
-    private static final String TEXT = "\t<text fill='black' font-family='sans-serif' font-size='10' x='%d' y='13'" +
+    private static final String TEXT = "\t<text fill='black' font-family='sans-serif' font-size='10' x='%d' y='%d'" +
              "text-anchor='middle'>%s</text>\n";
+    private static final String CONECTOR_LISTA = "\t<text fill='black' font-family='sans-serif' font-size='%d' x='%d' y='%d'" +
+             "text-anchor='middle'>%s</text>\n";         
 
 
 	public String dibujaLista(Lista<?> l) {
 		dibujo = "";
 		int longitud = 50*l.getLongitud() + 10*l.getLongitud()-1;
-		int altura = 20;
-		int longitudNodo = 50;
-		dibujo += String.format(START_SVG,longitud,altura);
-		dibujo += START_G;
+		dibujo += String.format(INICIO_SVG,longitud,20);
+		dibujo += INICIO_G;
 		int i = 0;
 		for (Object e : l){ 
-			dibujo += String.format(RECT,60*i,0,longitudNodo,altura);
-			dibujo += String.format(TEXT,60*i+25,e.toString());
+			dibujo += String.format(RECT,60*i,0,50,20);
+			if (i+1 < l.getLongitud())
+				dibujo += dibujaConector(CONECTOR_LISTA,10,60*(i+1)-5,13,
+											"&#x2194;");
+			dibujo += String.format(TEXT,60*i+25,13,e.toString());
 			i++;
 		}
-		dibujo += END_G;
-		dibujo += END_SVG;
+		dibujo += CIERRA_G;
+		dibujo += CIERRA_SVG;
 		return dibujo;
 	}
 
@@ -48,13 +53,18 @@ public class Graficador {
 			i++;
 		}
 		alturaTotal = 20*(i+1) + 10*i;
-		dibujo += String.format(START_SVG,50,alturaTotal);
-		dibujo += START_G;
+		dibujo += String.format(INICIO_SVG,50,alturaTotal);
+		dibujo += INICIO_G;
 		for (String s : lineas)
 			dibujo += s;
-		dibujo += END_G;
-		dibujo += END_SVG;
+		dibujo += CIERRA_G;
+		dibujo += CIERRA_SVG;
 		return dibujo;
+	}
+
+	private String dibujaConector(String cons, int size,int x, int y, 
+									String conector) {
+		return String.format(cons,size,x,y,conector);
 	}
 
 }

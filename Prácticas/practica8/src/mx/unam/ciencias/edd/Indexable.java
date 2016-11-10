@@ -1,5 +1,7 @@
 package mx.unam.ciencias.edd;
 
+import java.lang.Math;
+
 /**
  * Clase para poder utilizar comparables indexables.
  */
@@ -18,7 +20,9 @@ public class Indexable<T> implements ComparableIndexable<Indexable<T>> {
      * @param valor su valor.
      */
     public Indexable(T elemento, double valor) {
-        // Aquí va su código.
+        this.elemento = elemento;
+        this.valor = valor;
+        this.indice = -1;
     }
 
     /**
@@ -26,7 +30,7 @@ public class Indexable<T> implements ComparableIndexable<Indexable<T>> {
      * @return el elemento del indexable.
      */
     public T getElemento() {
-        // Aquí va su código.
+        return this.elemento;
     }
 
     /**
@@ -37,7 +41,11 @@ public class Indexable<T> implements ComparableIndexable<Indexable<T>> {
      *         es mayor.
      */
     @Override public int compareTo(Indexable<T> indexable) {
-        // Aquí va su código.
+        if (this.valor < indexable.valor)
+            return -1;
+        if (this.valor > indexable.valor)
+            return 1;
+        return 0;
     }
 
     /**
@@ -45,7 +53,7 @@ public class Indexable<T> implements ComparableIndexable<Indexable<T>> {
      * @param indice el nuevo índice.
      */
     @Override public void setIndice(int indice) {
-        // Aquí va su código.
+        this.indice = indice;
     }
 
     /**
@@ -53,7 +61,7 @@ public class Indexable<T> implements ComparableIndexable<Indexable<T>> {
      * @return el índice del indexable.
      */
     @Override public int getIndice() {
-        // Aquí va su código.
+        return this.indice;
     }
 
     /**
@@ -61,7 +69,7 @@ public class Indexable<T> implements ComparableIndexable<Indexable<T>> {
      * @param valor el nuevo valor.
      */
     public void setValor(double valor) {
-        // Aquí va su código.
+        this.valor = valor;
     }
 
     /**
@@ -69,7 +77,7 @@ public class Indexable<T> implements ComparableIndexable<Indexable<T>> {
      * @return el valor del indexable.
      */
     public double getValor() {
-        // Aquí va su código.
+        return valor;
     }
 
     /**
@@ -82,6 +90,6 @@ public class Indexable<T> implements ComparableIndexable<Indexable<T>> {
         if (!(o instanceof Indexable))
             return false;
         @SuppressWarnings("unchecked") Indexable<T> indexable = (Indexable<T>)o;
-        // Aquí va su código.
+        return (this.valor == indexable.valor && this.indice == indexable.indice);
     }
 }

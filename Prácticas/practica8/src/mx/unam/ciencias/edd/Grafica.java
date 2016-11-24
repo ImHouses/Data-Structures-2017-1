@@ -111,7 +111,6 @@ public class Grafica<T> implements Coleccion<T> {
         for (Vertice v : vertices)
             aristas += v.getGrado();
         return aristas / 2;
-
     }
 
     /**

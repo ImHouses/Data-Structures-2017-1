@@ -37,10 +37,4 @@ public class Practica10 {
         System.out.println(xor.dispersa(mensaje) & m);
         System.out.println(longitud(128));
     }
-    private static int longitud(int n) {
-        int r = 1;
-        while (r < n)
-            r <<= 1;
-        return (r << 1 < 64) ? 64 : r << 1;
-    }
 }

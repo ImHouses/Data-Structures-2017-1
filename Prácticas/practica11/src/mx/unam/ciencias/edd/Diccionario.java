@@ -41,26 +41,33 @@ public class Diccionario<K, V> implements Iterable<V> {
          * diccionario. */
         public Iterador() {
             indice = 0;
+            while (indice < entradas.length)
+                if (entradas[indice] != null)
+                    break;
+                else indice++;
+            iterador = entradas[indice].iterator();
         }
 
         /* Nos dice si hay un siguiente elemento. */
         public boolean hasNext() {
-            return indice != entradas.length;
+            if (iterador.hasNext())
+                return iterador.hasNext();
+            indice++;
+            while (indice < entradas.length)
+                if (entradas[indice] != null)
+                    break;
+                else indice++;
+            if (indice == entradas.length - 1 && entradas[indice] != null)
+                iterador = entradas[indice].iterator();
+            else if (indice >= entradas.length - 1)
+                return false;
+            iterador = entradas[indice].iterator();
+            return iterador.hasNext();
         }
 
         /* Regresa el siguiente elemento. */
-        public V next() {
-            /* 
-              Si estamos en una entrada vacía avanzamos hasta encontrar una
-              entrada ocupada.
-             */
-            while (entradas[indice] == null && indice < entradas.length)
-                indice++;
-            if (iterador == null)
-                iterador = entradas[indice].iterador();
-            if (iterador.hasNext())
-                return iterador.next();
-            else iterador = null;
+        public V next() { 
+            return iterador.next().valor;
         }
 
         /* No lo implementamos: siempre lanza una excepción. */
@@ -94,10 +101,10 @@ public class Diccionario<K, V> implements Iterable<V> {
      * predeterminados.
      */
     public Diccionario() {
-        this.dispersor = FabricaDispersores(AlgoritmoDispersor.BJ_STRING);
-        this.entradas = nuevoArreglo(MIN_N);
+        this.dispersor = ((K o) -> o.hashCode());
+        this.entradas = nuevoArreglo(longitud(MIN_N));
         this.elementos = 0;
-        this.mascara = MIN_N - 1;
+        this.mascara = entradas.length - 1;
     }
 
     /**
@@ -107,7 +114,7 @@ public class Diccionario<K, V> implements Iterable<V> {
      */
     public Diccionario(int tam) {
         int l = longitud(tam);
-        this.dispersor = FabricaDispersores(AlgoritmoDispersor.BJ_STRING);
+        this.dispersor = ((K o) -> o.hashCode());
         this.entradas = nuevoArreglo(l);
         this.elementos = 0;
         this.mascara = l - 1;
@@ -150,13 +157,18 @@ public class Diccionario<K, V> implements Iterable<V> {
     public void agrega(K llave, V valor) {
         if (llave == null || valor == null)
             throw new IllegalArgumentException();
-        if (estaCargado())
-            creceArreglo();
         int indice = getIndice(llave);
         if (entradas[indice] == null)
-            entradas[indice] = Lista<Entrada> entrada = new Lista<Entrada>();
+            entradas[indice] = new Lista<Entrada>();
+        for (Entrada e : entradas[indice])
+            if (e.llave.equals(llave)) {
+                e.valor = valor;
+                return;
+                }
         entradas[indice].agregaFinal(new Entrada(llave,valor));
-        elementos++; 
+        elementos++;
+        if (estaCargado())
+            creceArreglo();
     }
 
     /**
@@ -171,7 +183,8 @@ public class Diccionario<K, V> implements Iterable<V> {
         for (Entrada e : entradas[indice])
             if (e.llave.equals(llave))
                 return e.valor;
-        } else throw new NoSuchElementException("La llave no se encuentra.");
+        }
+        throw new NoSuchElementException("La llave no está en el diccionario.");
     }
 
     /**
@@ -203,6 +216,7 @@ public class Diccionario<K, V> implements Iterable<V> {
         for (Entrada e : entradas[indice])
             if (e.llave.equals(llave))
                 entradas[indice].elimina(e);
+        elementos--;
     }
 
     /**
@@ -259,7 +273,7 @@ public class Diccionario<K, V> implements Iterable<V> {
             if (entradas[i] == null)
                 continue;
             if (entradas[i].getElementos() - 1 > c)
-                c += entradas[i].getElementos - 1;
+                c += entradas[i].getElementos() - 1;
         }
         return c;
     }
@@ -269,7 +283,9 @@ public class Diccionario<K, V> implements Iterable<V> {
      * @return la carga del diccionario.
      */
     public double carga() {
-        return elementos / entradas.length;
+        double e = elementos;
+        double l = entradas.length;
+        return e / l;
     }
 
     /**
@@ -300,16 +316,14 @@ public class Diccionario<K, V> implements Iterable<V> {
         if (!(o instanceof Diccionario))
             return false;
         @SuppressWarnings("unchecked") Diccionario<K, V> d = (Diccionario<K, V>)o;
-        if (d.elementos != elementos)
+        if (d.elementos != this.elementos)
             return false;
-        Lista<Entrada>[] ld = d.entradas;
-        for (int i = 0 ; i < entradas.length; ) {
-            if ((ld[i] == null && entradas[i] != null) ||
-                 (ld[i] != null && entradas[i] == null))
-                return false;
-            if (!ld[i].equals(entradas[i]))
-                return false;
-        }
+        for(int i = 0 ; i < entradas.length ; i++)
+            if (entradas[i] != null)
+                for (Entrada e : entradas[i])
+                    if (!d.contiene(e.llave))
+                        return false;
+        return true;
     }
 
     /**
@@ -318,7 +332,7 @@ public class Diccionario<K, V> implements Iterable<V> {
      * @return un iterador para iterar el diccionario.
      */
     @Override public Iterator<V> iterator() {
-        return new Iterator();
+        return new Iterador();
     }
 
     /**
@@ -330,7 +344,7 @@ public class Diccionario<K, V> implements Iterable<V> {
         int r = 1;
         while (r < n)
             r <<= 1;
-        r << 1 < 64 ? 64 : r << 1;
+        return (r << 1 < 64) ? 64 : r << 1;
     }
     /**
     * Nos dice si el diccionario está en su carga máxima.
@@ -338,7 +352,7 @@ public class Diccionario<K, V> implements Iterable<V> {
     *         <code>false</code> en otro caso.
     */
     private boolean estaCargado() {
-        return carga() >= MAXIMA_CARGA - .10;
+        return carga() >= MAXIMA_CARGA;
     }
 
     /**
@@ -346,14 +360,16 @@ public class Diccionario<K, V> implements Iterable<V> {
     * elementos uno por uno por el problema de las diferentes máscaras.
     */
     private void creceArreglo() {
-        int tam = longitud(entradas.length);
+        int tam = longitud(entradas.length);  
         this.mascara = tam - 1;
         this.elementos = 0;
         Lista<Entrada>[] antiguo = this.entradas;
         Lista<Entrada>[] nuevo = nuevoArreglo(tam);
         this.entradas = nuevo;
-        for (Entrada e : antiguo)
-            agrega(e.llave,e.valor);
+        for (int i = 0 ; i < antiguo.length ; i++)
+            if (antiguo[i] != null)
+                for (Entrada e : antiguo[i])
+                    agrega(e.llave,e.valor);
     }
 
     private int getIndice(K llave) {

@@ -55,7 +55,7 @@ public class Graficador {
                                                  "'%d' x='%d' y='%d' text-anch"+
                                                  "or='middle'>%s</text>\n";
 	/* Etiqueta para círculo. */
-	private static final String CIRCLE = "\t<circle cx='%d' cy='%d' r='10' str"+
+	private static final String CIRCLE = "\t<circle cx='%d' cy='%d' r='20' str"+
 										 "oke='%s' fill='%s' /"+
 										 ">\n";
 	/* Etiqueta para círculo de gráfica. */
@@ -81,6 +81,8 @@ public class Graficador {
     private double x;
     /* Atributos para la gráfica. */
     private double y;
+    /* Atributo para circulos con radio personalizado. */
+    private String c;
     
     /**
     * Dibuja una gráfica de cualquier tipo.
@@ -239,7 +241,7 @@ public class Graficador {
 		dibujo = "";
 		lineas = new Lista<String>();
 		int profundidad = arbol.profundidad() * 60;
-		int anchura = arbol.getElementos() * 40;
+		int anchura = arbol.getElementos() * 80;
 		cadena += String.format(INICIO_SVG,anchura,profundidad);
 		cadena += INICIO_G;
 		String tipo;
@@ -317,7 +319,7 @@ public class Graficador {
 		String[] aVertice = vertice.split("\\s+");
 		vertice = String.format(CIRCLE,x,y,"black","white");
 		vertice += String.format(TEXT,x,y+3,"black",v.get().toString());
-		vertice += String.format(TEXT,x+18,y+4,"#0000ff",aVertice[1]);
+		vertice += String.format(TEXT,x+30,y+2,"#0000ff",aVertice[1]);
 		return vertice;
 	}
 

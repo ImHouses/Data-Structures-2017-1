@@ -73,6 +73,14 @@ public class Palabra implements Comparable<Palabra> {
 	* @return la palabra con las ocurrencias en cadena.
 	*/
 	public String toString() {
+		return this.palabra;
+	}
+
+	/**
+	* Regresa la información de la palabra.
+	* @return la información en cadena.
+	*/
+	public String getInfo() {
 		return String.format("'%s' Se repite: %d veces",
 							this.palabra,this.ocurrencias);
 	}

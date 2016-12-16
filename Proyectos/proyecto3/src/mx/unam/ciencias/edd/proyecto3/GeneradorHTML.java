@@ -1,6 +1,9 @@
 package mx.unam.ciencias.edd.proyecto3;
 
 import java.lang.StringBuffer;
+import mx.unam.ciencias.edd.Lista;
+import mx.unam.ciencias.edd.ArbolRojinegro;
+import mx.unam.ciencias.edd.ArbolAVL;
 
 public class GeneradorHTML {
 	
@@ -32,11 +35,34 @@ public class GeneradorHTML {
 		s.append(String.format(H1, "Coincidencias de palabras"));
 		StringBuffer c = new StringBuffer();
 		for (Palabra p : r.getCoincidencias())
-			c.append("\t" + p.toString() + "<br>\n");
+			c.append("\t" + p.getInfo() + "<br>\n");
 		s.append(String.format(PAR,c.toString()));
 		s.append(String.format(H1, "Gráfica de barras."));
 		s.append(g.barras(r.getTop()));
+		s.append(String.format(H1, "Árbol rojinegro."));
+		int i = 1;
+		ArbolRojinegro<Palabra> rojinegro = new ArbolRojinegro<Palabra>();
+		ArbolAVL<Palabra> avl = new ArbolAVL<>();
+		for (Palabra p : r.getCoincidencias().reversa()) {
+			if (i != 16) {
+				rojinegro.agrega(p);
+				avl.agrega(p);
+				i++;
+			}
+		}
+		s.append(g.dibujaArbolBinario(rojinegro));
+		s.append(String.format(H1, "Árbol AVL"));
+		s.append(g.dibujaArbolBinario(avl));
 		s.append(CIERRA_HTML);
 		return s.toString();
+	}
+
+	/**
+	* Genera el index con los reportes.
+	* @param la lista de los reportes que se van a indexar.
+	* @return el index.
+	*/
+	public static String generaIndex(Lista<ReporteTexto> reportes) {
+		return null;
 	}
 }

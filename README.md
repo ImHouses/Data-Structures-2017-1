@@ -1,20 +1,17 @@
-# Data-Structures-2017-1
-Curso de Estructuras de Datos.
-Profesor: Dr. Canek Peláez Valdés
+# Data Structures in Java
+Implementations for a Data Structures course.
 
-# Prácticas
- 1. Listas
- 2. Arreglos
- 3. Pilas y colas
- 4. Árboles binarios
- 5. Árboles binarios rojinegros
- 6. Árboles binarios AVL
- 7. Gráficas
- 8. Montículos mínimos
- 9. Algoritmo de Dijkstra y trayectoria mínima
- 10. Funciones de dispersión
- 11. Diccionarios (Hash Tables) 
+## Structures Implemented
+ 1. Double Linked Lists
+ 2. Arrays
+ 3. Stack and Queues
+ 4. Simple Binary Trees
+ 5. Red Black Trees
+ 6. AVL Trees
+ 7. Graphs
+ 8. Min Heaps
+ 11. Hash Tables
 
-# Proyectos
-  1. Ordenador Lexicográfico
-  2. Graficador SVG de estructuras de datos
+# Projects
+  1. Lexicographic Sorter
+  2. Data Structures SVG renderer
